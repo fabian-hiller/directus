@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress';
 import TypeDocSidebar from '../packages/typedoc-sidebar.json';
 
 export default defineConfig({
-	base: '/',
+	base: '/docs/',
 	lang: 'en-US',
 	title: 'Directus Docs',
 	description: 'Directus. An Instant App & API for your SQL Database.',
