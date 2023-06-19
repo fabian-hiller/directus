@@ -4,13 +4,15 @@ import { select } from './select.js';
 import type { ParameterizedSQLStatement } from '@directus/data-sql';
 import { limit } from './limit.js';
 import { offset } from './offset.js';
+import { orderBy } from './orderBy.js';
 
 /**
- * All of the sub functions are called for any query.
- * Within those functions checks are being made, if the part can or should be included within the statement.
+ * To create a PostgreSQL statement each part is constructed in separate functions.
+ * Those functions check if the part should needs to be created.
+ * If not they return null.
  *
- * @param query the abstract SQL statement
- * @returns An actual SQL with parameters
+ * @param query the abstract SQL query
+ * @returns An actual PostgreSQL statement with parameters
  */
 export function constructSql(query: SqlStatement): ParameterizedSQLStatement {
 	const base = [select(query), from(query)].join(' ');
@@ -18,8 +20,12 @@ export function constructSql(query: SqlStatement): ParameterizedSQLStatement {
 	const limitPart = limit(query);
 	const offsetPart = offset(query);
 
+	const orderByPart = orderBy(query);
+
+	const actualParts = [base, limitPart, offsetPart, orderByPart].filter((p) => p !== null);
+
 	return {
-		statement: `${base} ${limitPart} ${offsetPart}`.trimEnd() + ';',
+		statement: actualParts.join(' ').trim() + ';',
 		parameters: query.parameters,
 	};
 }

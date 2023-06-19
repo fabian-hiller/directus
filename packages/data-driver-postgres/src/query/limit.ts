@@ -6,9 +6,9 @@ import type { SqlStatement } from '@directus/data-sql';
  * @param query - The abstract query
  * @returns The `LIMIT x` part of a SQL statement
  */
-export function limit({ limit }: SqlStatement): string {
+export function limit({ limit }: SqlStatement): string | null {
 	if (limit === undefined) {
-		return '';
+		return null;
 	}
 
 	return `LIMIT $${limit.parameterIndex + 1}`;

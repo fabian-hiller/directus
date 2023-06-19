@@ -26,7 +26,7 @@ beforeEach(() => {
 });
 
 test('Empty parametrized statement when order is not defined', () => {
-	expect(orderBy(sample.statement)).toStrictEqual('');
+	expect(orderBy(sample.statement)).toStrictEqual(null);
 });
 
 test('Returns order part for one primitive field', () => {

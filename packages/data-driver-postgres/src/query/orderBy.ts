@@ -8,9 +8,9 @@ import { escapeIdentifier } from '../utils/escape-identifier.js';
  * @param query - The abstract query
  * @returns The `ORDER BY x` part of a SQL statement
  */
-export function orderBy({ order }: SqlStatement): string {
+export function orderBy({ order }: SqlStatement): string | null {
 	if (order === undefined) {
-		return '';
+		return null;
 	}
 
 	const sortExpressions = order.map((o) => {
