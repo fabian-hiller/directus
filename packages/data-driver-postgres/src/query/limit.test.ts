@@ -26,7 +26,7 @@ beforeEach(() => {
 });
 
 test('Empty parametrized statement when limit is not defined', () => {
-	expect(limit(sample.statement)).toStrictEqual(null);
+	expect(limit(sample.statement)).toStrictEqual('');
 });
 
 test('Returns limit part with one parameter', () => {

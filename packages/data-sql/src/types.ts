@@ -50,16 +50,13 @@ export interface AbstractSqlQuery {
 	from: string;
 	limit?: ParameterIndex;
 	offset?: ParameterIndex;
-	order?: {
-		orderBy: AbstractQueryNodeSortTargets;
-		order: 'ASC' | 'DESC';
-	}[];
+	order?: AbstractSqlOrder[];
 	parameters: (string | boolean | number)[];
 }
 
-export type SqlOrder = {
+export type AbstractSqlOrder = {
 	orderBy: AbstractQueryNodeSortTargets;
-	order: 'ASC' | 'DESC';
+	direction: 'ASC' | 'DESC';
 };
 
 /**

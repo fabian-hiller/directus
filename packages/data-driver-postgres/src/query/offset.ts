@@ -6,9 +6,9 @@ import type { SqlStatement } from '@directus/data-sql';
  * @param query The abstract query
  * @returns The `OFFSET x` part of a SQL statement
  */
-export function offset({ offset }: SqlStatement): string | null {
+export function offset({ offset }: SqlStatement): string {
 	if (offset === undefined) {
-		return null;
+		return '';
 	}
 
 	return `OFFSET $${offset.parameterIndex + 1}`;

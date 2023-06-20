@@ -22,33 +22,30 @@ beforeEach(() => {
 	};
 });
 
-test('convert ascending sort', () => {
+test('convert ascending sort with a single field', () => {
 	const res = convertSort(sample.sort);
 
 	expect(res).toStrictEqual([
 		{
-			orderBy: sample.sort[0]?.target,
-			order: 'ASC',
+			orderBy: sample.sort[0]!.target,
+			direction: 'ASC',
 		},
 	]);
 });
 
-test('convert descending sort', () => {
-	// @ts-ignore
-	sample.sort[0].direction = 'descending';
+test('convert descending sort with a single field', () => {
+	sample.sort[0]!.direction = 'descending';
 	const res = convertSort(sample.sort);
 
 	expect(res).toStrictEqual([
 		{
-			// @ts-ignore
-			orderBy: sample.sort[0]?.target,
-			order: 'DESC',
+			orderBy: sample.sort[0]!.target,
+			direction: 'DESC',
 		},
 	]);
 });
 
-test('convert multiple sorts', () => {
-	// @ts-ignore
+test('convert ascending sort with multiple fields', () => {
 	sample.sort.push({
 		type: 'sort',
 		direction: 'ascending',
@@ -62,12 +59,12 @@ test('convert multiple sorts', () => {
 
 	expect(res).toStrictEqual([
 		{
-			orderBy: sample.sort[0]?.target,
-			order: 'ASC',
+			orderBy: sample.sort[0]!.target,
+			direction: 'ASC',
 		},
 		{
-			orderBy: sample.sort[1]?.target,
-			order: 'ASC',
+			orderBy: sample.sort[1]!.target,
+			direction: 'ASC',
 		},
 	]);
 });

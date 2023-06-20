@@ -1,16 +1,15 @@
 import type { AbstractQueryNodeSort } from '@directus/data';
-import type { SqlOrder } from '../types.js';
+import type { AbstractSqlOrder } from '../types.js';
 
 /**
- * @param abstractPrimitive
- * @param collection
- * @returns the converted primitive node
+ * @param abstractSorts
+ * @returns the converted sort nodes
  */
-export const convertSort = (abstractSorts: AbstractQueryNodeSort[]): SqlOrder[] => {
+export const convertSort = (abstractSorts: AbstractQueryNodeSort[]): AbstractSqlOrder[] => {
 	return abstractSorts.map((abstractSort) => {
 		return {
 			orderBy: abstractSort.target,
-			order: abstractSort.direction === 'descending' ? 'DESC' : 'ASC',
+			direction: abstractSort.direction === 'descending' ? 'DESC' : 'ASC',
 		};
 	});
 };

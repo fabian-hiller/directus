@@ -28,7 +28,7 @@ beforeEach(() => {
 	};
 });
 
-test('Get all selects', () => {
+test('Convert simple query', () => {
 	const res = convertAbstractQueryToAbstractSqlQuery(sample.query);
 
 	const expected: AbstractSqlQuery = {
@@ -51,7 +51,7 @@ test('Get all selects', () => {
 	expect(res).toStrictEqual(expected);
 });
 
-test('Get selects with a limit', () => {
+test('Convert query with a limit', () => {
 	sample.query.modifiers = {
 		limit: {
 			type: 'limit',
@@ -82,7 +82,7 @@ test('Get selects with a limit', () => {
 	expect(res).toStrictEqual(expected);
 });
 
-test('Get selects with a limit and offset', () => {
+test('Convert query with limit and offset', () => {
 	sample.query.modifiers = {
 		limit: {
 			type: 'limit',
@@ -118,7 +118,7 @@ test('Get selects with a limit and offset', () => {
 	expect(res).toStrictEqual(expected);
 });
 
-test('Get selects with a sort', () => {
+test('Convert query with a sort', () => {
 	sample.query.modifiers = {
 		sort: [
 			{
@@ -132,9 +132,9 @@ test('Get selects with a sort', () => {
 		],
 	};
 
-	const res = convertAbstractQueryToSqlStatement(sample.query);
+	const res = convertAbstractQueryToAbstractSqlQuery(sample.query);
 
-	const expected: SqlStatement = {
+	const expected: AbstractSqlQuery = {
 		select: [
 			{
 				type: 'primitive',
@@ -150,12 +150,63 @@ test('Get selects with a sort', () => {
 		from: sample.query.collection,
 		order: [
 			{
-				// @ts-ignore
-				orderBy: sample.query.modifiers.sort[0].target,
-				order: 'ASC',
+				orderBy: sample.query.modifiers.sort![0]!.target,
+				direction: 'ASC',
 			},
 		],
 		parameters: [],
+	};
+
+	expect(res).toStrictEqual(expected);
+});
+
+test('Convert a query with all possible modifiers', () => {
+	sample.query.modifiers = {
+		limit: {
+			type: 'limit',
+			value: randomInteger(1, 100),
+		},
+		offset: {
+			type: 'offset',
+			value: randomInteger(1, 100),
+		},
+		sort: [
+			{
+				type: 'sort',
+				direction: 'ascending',
+				target: {
+					type: 'primitive',
+					field: randomIdentifier(),
+				},
+			},
+		],
+	};
+
+	const res = convertAbstractQueryToAbstractSqlQuery(sample.query);
+
+	const expected: AbstractSqlQuery = {
+		select: [
+			{
+				type: 'primitive',
+				table: sample.query.collection,
+				column: (sample.query.nodes[0] as AbstractQueryFieldNodePrimitive).field,
+			},
+			{
+				type: 'primitive',
+				table: sample.query.collection,
+				column: (sample.query.nodes[1] as AbstractQueryFieldNodePrimitive).field,
+			},
+		],
+		from: sample.query.collection,
+		order: [
+			{
+				orderBy: sample.query.modifiers.sort![0]!.target,
+				direction: 'ASC',
+			},
+		],
+		limit: { parameterIndex: 0 },
+		offset: { parameterIndex: 1 },
+		parameters: [sample.query.modifiers.limit!.value, sample.query.modifiers.offset!.value],
 	};
 
 	expect(res).toStrictEqual(expected);
