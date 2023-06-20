@@ -61,11 +61,11 @@ test('statement with order', () => {
 				type: 'primitive',
 				field: randomIdentifier(),
 			},
-			order: 'ASC',
+			direction: 'ASC',
 		},
 	];
 
-	expect(constructSql(sample.statement)).toEqual({
+	expect(constructSqlQuery(sample.statement)).toEqual({
 		statement: `SELECT "${sample.statement.select[0]!.table}"."${sample.statement.select[0]!.column}", "${
 			sample.statement.select[1]!.table
 		}"."${sample.statement.select[1]!.column}" FROM "${sample.statement.from}" ORDER BY "${
