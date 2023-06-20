@@ -1,10 +1,10 @@
 import { test, expect, beforeEach } from 'vitest';
 import { orderBy } from './orderBy.js';
 import { randomIdentifier } from '@directus/random';
-import type { SqlStatement } from '@directus/data-sql';
+import type { AbstractSqlQuery } from '@directus/data-sql';
 
 let sample: {
-	statement: SqlStatement;
+	statement: AbstractSqlQuery;
 };
 
 beforeEach(() => {
@@ -36,7 +36,7 @@ test('Returns order part for one primitive field', () => {
 				type: 'primitive',
 				field: randomIdentifier(),
 			},
-			order: 'ASC',
+			direction: 'ASC',
 		},
 	];
 
@@ -53,14 +53,14 @@ test('Returns order part for multiple primitive fields', () => {
 				type: 'primitive',
 				field: randomIdentifier(),
 			},
-			order: 'ASC',
+			direction: 'ASC',
 		},
 		{
 			orderBy: {
 				type: 'primitive',
 				field: randomIdentifier(),
 			},
-			order: 'DESC',
+			direction: 'DESC',
 		},
 	];
 
